@@ -1,5 +1,8 @@
 from __future__ import print_function
 import keras
+import numpy as np
+import pickle 
+
 from keras.datasets import mnist
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Flatten, Merge
@@ -7,8 +10,6 @@ from keras.layers import Conv2D, MaxPooling2D, Activation
 from keras import backend as K
 from keras.utils import plot_model
 from cv2 import imread
-import numpy as np
-
 
 from data import getVideoData
 from data import getAudioData
@@ -121,12 +122,21 @@ def audioMain():
     print(model.summary())
     model = getTrainedModel(model, dataFactory = getAudioData)
 
+def save(model, fname):
+    pickle.dump(model, open(fname, 'wb'))
+
+def load(fname):
+    return pickle.load(open(fname, 'rb'))
+
+
 def fusedMain():
     vmodel = getModelArchitecture((224, 224, 3), (28, 28))
     amodel = getModelArchitecture((199, 257, 3), (25, 33))
     
     f = fusionBranch(vmodel, amodel)
     f = trainFinal(f)
+
+    save(f, 'model.dmp')
     
     return f
 
