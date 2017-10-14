@@ -29,13 +29,14 @@ def fusionBranch(video_branch, audio_branch):
 
     final = Sequential()
     final.add(Merge([video_branch, audio_branch]))
-    final.add(Dense(128, activation='sigmoid'))
+    #final.add(Dense(512, activation='relu'))
+    final.add(Dense(128, activation='relu'))
     final.add(Flatten())
-    final.add(Dense(2, activation='sigmoid'))
     final.add(Dense(2, activation='softmax'))
 
     final.compile(loss='categorical_crossentropy',
-            optimizer='adam',
+            optimizer=keras.optimizers.Adadelta(),
+            #optimizer='adam',
             metrics=['accuracy']
             )
 
@@ -46,7 +47,7 @@ def getModelArchitecture(input_shape, final_pool):
     cmodel = Sequential()
 
     #cmodel.add(Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=input_shape, padding = 'same'))
-    cmodel.add(Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=input_shape, padding = 'same'))
+    cmodel.add(Conv2D(16, kernel_size=(3, 3), activation='relu', input_shape=input_shape, padding = 'same'))
     #cmodel.add(Conv2D(64, kernel_size=(3, 3), activation='relu', padding='same'))
     cmodel.add(MaxPooling2D(pool_size=(2, 2), strides=2, padding='same'))
     cmodel.add(Dropout(0.25))
@@ -57,13 +58,13 @@ def getModelArchitecture(input_shape, final_pool):
     cmodel.add(Dropout(0.25))
 
     #cmodel.add(Conv2D(64, kernel_size=(3, 3), activation='relu', padding='same'))
-    cmodel.add(Conv2D(32, kernel_size=(3, 3), activation='relu', padding='same'))
+    cmodel.add(Conv2D(64, kernel_size=(3, 3), activation='relu', padding='same'))
     #cmodel.add(Conv2D(256, kernel_size=(3, 3), activation='relu', padding='same'))
     cmodel.add(MaxPooling2D(pool_size=(2, 2), strides=2, padding='same'))
     cmodel.add(Dropout(0.25))
 
     #cmodel.add(Conv2D(32, kernel_size=(3, 3), activation='relu', padding='same'))
-    cmodel.add(Conv2D(64, kernel_size=(3, 3), activation='relu', padding='same'))
+    cmodel.add(Conv2D(128, kernel_size=(3, 3), activation='relu', padding='same'))
     #cmodel.add(Conv2D(512, kernel_size=(3, 3), activation='relu', padding='same'))
     cmodel.add(MaxPooling2D(pool_size=(final_pool), strides=None, padding='same'))
     cmodel.add(Dropout(0.25))

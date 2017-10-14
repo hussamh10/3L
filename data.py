@@ -83,12 +83,12 @@ def getAudioData(dir1 = '.\\data\\audio\\airplanes\\' , dir2 = '.\\data\\audio\\
 
     return train_data, train_label, test_data, test_label
 
-def getVideoData():
+def getVideoData(dir1 = '.\\data\\video\\airplanes\\', dir2 = '.\\data\\video\\motorbikes\\'):
     data = []
     labels = []
 
-    data, labels = readImages('.\\data\\video\\airplanes\\' , 0, 400, data, labels, '.jpg')
-    data, labels = readImages('.\\data\\video\\motorbikes\\', 1, 400, data, labels, '.jpg')
+    data, labels = readImages(dir1, 0, 400, data, labels, '.jpg')
+    data, labels = readImages(dir2, 1, 400, data, labels, '.jpg')
 
     train_data = data[:800]
     train_label = labels[:800]
