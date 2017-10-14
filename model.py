@@ -21,12 +21,7 @@ def trainFinal(final):
     print('Data ready')
 
     final.fit(audio_video_data_tuple, label_on_correspondence,
-<<<<<<< HEAD
-            batch_size=10, epochs=10, verbose=1,
-            shuffle=False)
-=======
             batch_size=10, epochs=20, verbose=1)
->>>>>>> 857de9dc76f4022b92decd7d3901c7c5fd469f63
 
     return final
 
