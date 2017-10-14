@@ -21,8 +21,12 @@ def trainFinal(final):
     print('Data ready')
 
     final.fit(audio_video_data_tuple, label_on_correspondence,
+<<<<<<< HEAD
             batch_size=10, epochs=10, verbose=1,
             shuffle=False)
+=======
+            batch_size=10, epochs=20, verbose=1)
+>>>>>>> 857de9dc76f4022b92decd7d3901c7c5fd469f63
 
     return final
 
@@ -112,13 +116,14 @@ def getTrainedModel(model, dataFactory):
 
 def vidMain():
     model = getModelArchitecture((224, 224, 3), (28, 28))
+    model = addFCLayers(model)
     print(model.summary())
     model = getTrainedModel(model, dataFactory = getVideoData)
 
     return model
 
 def audioMain():
-    model = getModelArchitecture((199, 257, 3), (33, 25))
+    model = getModelArchitecture((199, 257, 3), (25, 33))
     model = addFCLayers(model)
     print(model.summary())
     model = getTrainedModel(model, dataFactory = getAudioData)

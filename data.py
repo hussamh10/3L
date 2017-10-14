@@ -49,6 +49,7 @@ def getFusionData():
 
     pair_labels = utils.to_categorical(pair_labels, 2)
 
+    print(pairs[0].shape, pair_labels.shape)
     return pairs, pair_labels
 
 
@@ -56,14 +57,14 @@ def getAudioData(dir1 = '.\\data\\audio\\airplanes\\' , dir2 = '.\\data\\audio\\
     data = []
     labels = []
 
-    data, labels = readImages(dir1, 0, 800, data, labels, '.jpg')
-    data, labels = readImages(dir2, 1, 800, data, labels, '.jpg')
+    data, labels = readImages(dir1, 0, 400, data, labels, '.jpg')
+    data, labels = readImages(dir2, 1, 400, data, labels, '.jpg')
 
     train_data = data[:800]
     train_label = labels[:800]
 
-    test_data = data[1000:1100]
-    test_label = labels[1000:1100]
+    test_data = data[100:110]
+    test_label = labels[100:110]
 
     test_label = utils.to_categorical(test_label, 2)
     train_label = utils.to_categorical(train_label, 2)
@@ -86,14 +87,14 @@ def getVideoData():
     data = []
     labels = []
 
-    data, labels = readImages('.\\data\\video\\airplanes\\' , 0, 800, data, labels, '.jpg')
-    data, labels = readImages('.\\data\\video\\motorbikes\\', 1, 800, data, labels, '.jpg')
+    data, labels = readImages('.\\data\\video\\airplanes\\' , 0, 400, data, labels, '.jpg')
+    data, labels = readImages('.\\data\\video\\motorbikes\\', 1, 400, data, labels, '.jpg')
 
     train_data = data[:800]
     train_label = labels[:800]
 
-    test_data = data[1000:1100]
-    test_label = labels[1000:1100]
+    test_data = data[100:110]
+    test_label = labels[100:110]
 
     test_label = utils.to_categorical(test_label, 2)
     train_label = utils.to_categorical(train_label, 2)
