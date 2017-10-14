@@ -111,13 +111,14 @@ def getTrainedModel(model, dataFactory):
 
 def vidMain():
     model = getModelArchitecture((224, 224, 3), (28, 28))
+    model = addFCLayers(model)
     print(model.summary())
     model = getTrainedModel(model, dataFactory = getVideoData)
 
     return model
 
 def audioMain():
-    model = getModelArchitecture((199, 257, 3), (33, 25))
+    model = getModelArchitecture((199, 257, 3), (25, 33))
     model = addFCLayers(model)
     print(model.summary())
     model = getTrainedModel(model, dataFactory = getAudioData)
