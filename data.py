@@ -41,10 +41,11 @@ def getFusionData():
 
     all_audio = all_audio.reshape((1600, 199, 257, 3))
 
-    pairs = [all_images, all_audio]
-
     for _ in range(800):
         pair_labels.append(1)
+
+
+    pairs = [all_images, all_audio]
 
     pair_labels = utils.to_categorical(pair_labels, 2)
 

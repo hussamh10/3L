@@ -21,7 +21,8 @@ def trainFinal(final):
     print('Data ready')
 
     final.fit(audio_video_data_tuple, label_on_correspondence,
-            batch_size=10, epochs=10, verbose=1)
+            batch_size=10, epochs=10, verbose=1,
+            shuffle=False)
 
     return final
 
@@ -46,25 +47,25 @@ def getModelArchitecture(input_shape, final_pool):
     cmodel = Sequential()
 
     #cmodel.add(Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=input_shape, padding = 'same'))
-    cmodel.add(Conv2D(64, kernel_size=(3, 3), activation='relu', input_shape=input_shape, padding = 'same'))
-    cmodel.add(Conv2D(64, kernel_size=(3, 3), activation='relu', padding='same'))
+    cmodel.add(Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=input_shape, padding = 'same'))
+    #cmodel.add(Conv2D(64, kernel_size=(3, 3), activation='relu', padding='same'))
     cmodel.add(MaxPooling2D(pool_size=(2, 2), strides=2, padding='same'))
     cmodel.add(Dropout(0.25))
 
-    cmodel.add(Conv2D(128, kernel_size=(3, 3), activation='relu', padding='same'))
-    cmodel.add(Conv2D(128, kernel_size=(3, 3), activation='relu', padding='same'))
+    cmodel.add(Conv2D(32, kernel_size=(3, 3), activation='relu', padding='same'))
+    #cmodel.add(Conv2D(128, kernel_size=(3, 3), activation='relu', padding='same'))
     cmodel.add(MaxPooling2D(pool_size=(2, 2), strides=2, padding='same'))
     cmodel.add(Dropout(0.25))
 
     #cmodel.add(Conv2D(64, kernel_size=(3, 3), activation='relu', padding='same'))
-    cmodel.add(Conv2D(256, kernel_size=(3, 3), activation='relu', padding='same'))
-    cmodel.add(Conv2D(256, kernel_size=(3, 3), activation='relu', padding='same'))
+    cmodel.add(Conv2D(32, kernel_size=(3, 3), activation='relu', padding='same'))
+    #cmodel.add(Conv2D(256, kernel_size=(3, 3), activation='relu', padding='same'))
     cmodel.add(MaxPooling2D(pool_size=(2, 2), strides=2, padding='same'))
     cmodel.add(Dropout(0.25))
 
     #cmodel.add(Conv2D(32, kernel_size=(3, 3), activation='relu', padding='same'))
-    cmodel.add(Conv2D(512, kernel_size=(3, 3), activation='relu', padding='same'))
-    cmodel.add(Conv2D(512, kernel_size=(3, 3), activation='relu', padding='same'))
+    cmodel.add(Conv2D(64, kernel_size=(3, 3), activation='relu', padding='same'))
+    #cmodel.add(Conv2D(512, kernel_size=(3, 3), activation='relu', padding='same'))
     cmodel.add(MaxPooling2D(pool_size=(final_pool), strides=None, padding='same'))
     cmodel.add(Dropout(0.25))
 
