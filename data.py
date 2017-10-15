@@ -20,10 +20,13 @@ def readImages(dir, y, limit, data, labels, ext):
 
 def getFusionData():
 
-    images, _, _, _ = getVideoData()
+    images, _, v_images, _ = getVideoData()
 
     all_images = np.append(images, images)
+    all_v_images = np.append(v_images, v_images)
+
     all_images = all_images.reshape((1600, 224, 224, 3))
+    all_v_images = all_v_images.reshape((200, 224, 224, 3))
     
     
     pair_labels = []
@@ -32,25 +35,34 @@ def getFusionData():
 
     print(all_images.shape)
 
-    data = labels = []
-
-    audio1, _, _, _ = getAudioData()
-    audio2, _, _, _ = getAudioData('.\\data\\audio\\airplanes\\', '.\\data\\audio\\airplanes\\' )
+    audio1, _, vaudio1, _ = getAudioData()
+    audio2, _, vaudio2, _ = getAudioData('.\\data\\audio\\airplanes\\', '.\\data\\audio\\airplanes\\' )
 
     all_audio = np.append(audio1, audio2)
+    all_vaudio = np.append(vaudio1, vaudio2)
 
     all_audio = all_audio.reshape((1600, 199, 257, 3))
+    all_vaudio = all_vaudio.reshape((200, 199, 257, 3))
 
     for _ in range(800):
         pair_labels.append(1)
 
+    pair_vlabels = []
+
+    for _ in range(100):
+        pair_vlabels.append(0)
+    for _ in range(100):
+        pair_vlabels.append(1)
+
 
     pairs = [all_images, all_audio]
+    v_pairs = [all_v_images, all_vaudio]
 
     pair_labels = utils.to_categorical(pair_labels, 2)
+    pair_vlabels = utils.to_categorical(pair_vlabels, 2)
 
     print(pairs[0].shape, pair_labels.shape)
-    return pairs, pair_labels
+    return pairs, pair_labels, v_pairs, pair_vlabels
 
 
 def getAudioData(dir1 = '.\\data\\audio\\airplanes\\' , dir2 = '.\\data\\audio\\motorbikes\\'):
@@ -63,8 +75,8 @@ def getAudioData(dir1 = '.\\data\\audio\\airplanes\\' , dir2 = '.\\data\\audio\\
     train_data = data[:800]
     train_label = labels[:800]
 
-    test_data = data[100:110]
-    test_label = labels[100:110]
+    test_data = data[100:200]
+    test_label = labels[100:200]
 
     test_label = utils.to_categorical(test_label, 2)
     train_label = utils.to_categorical(train_label, 2)
@@ -93,8 +105,8 @@ def getVideoData(dir1 = '.\\data\\video\\airplanes\\', dir2 = '.\\data\\video\\m
     train_data = data[:800]
     train_label = labels[:800]
 
-    test_data = data[100:110]
-    test_label = labels[100:110]
+    test_data = data[100:200]
+    test_label = labels[100:200]
 
     test_label = utils.to_categorical(test_label, 2)
     train_label = utils.to_categorical(train_label, 2)

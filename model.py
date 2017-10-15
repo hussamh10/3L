@@ -17,11 +17,13 @@ from data import getFusionData
 
 def trainFinal(final):
     print('Getting data...')
-    audio_video_data_tuple, label_on_correspondence= getFusionData()
+    audio_video_data_tuple, label_on_correspondence, v_pairs, v_labels= getFusionData()
     print('Data ready')
 
     final.fit(audio_video_data_tuple, label_on_correspondence,
-            batch_size=10, epochs=20, verbose=1)
+            batch_size=10, epochs=20, verbose=1,
+            validation_data=(v_pairs, v_labels)
+            )
 
     return final
 
@@ -138,7 +140,7 @@ def fusedMain():
     f = fusionBranch(vmodel, amodel)
     f = trainFinal(f)
 
-    save(f, 'model.dmp')
+    #save(f, 'model.dmp')
     
     return f
 
