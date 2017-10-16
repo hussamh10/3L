@@ -17,13 +17,11 @@ from data import getFusionData
 
 def trainFinal(final):
     print('Getting data...')
-    audio_video_data_tuple, label_on_correspondence, v_pairs, v_labels= getFusionData()
+    audio_video_data_tuple, label_on_correspondence = getFusionData()
     print('Data ready')
 
     final.fit(audio_video_data_tuple, label_on_correspondence,
-            batch_size=10, epochs=20, verbose=1,
-            validation_data=(v_pairs, v_labels)
-            )
+            batch_size=10, epochs=2, verbose=1)
 
     return final
 
@@ -126,11 +124,13 @@ def audioMain():
     print(model.summary())
     model = getTrainedModel(model, dataFactory = getAudioData)
 
-def save(model, fname):
-    pickle.dump(model, open(fname, 'wb'))
+def saveWeights(model, fname):
+    model.save_weights(fname)
 
-def load(fname):
-    return pickle.load(open(fname, 'rb'))
+def loadModel(fname):
+    model = fusedMain()
+    model.load_weights(fname)
+    return model
 
 
 def fusedMain():
@@ -138,12 +138,11 @@ def fusedMain():
     amodel = getModelArchitecture((199, 257, 3), (25, 33))
     
     f = fusionBranch(vmodel, amodel)
-    f = trainFinal(f)
 
-    #save(f, 'model.dmp')
-    
     return f
 
 if __name__ == '__main__':
-    fusedMain()
+    f = fusedMain()
+    f = trainFinal(f)
+    saveWeights(f, 'model.dmp')
 
