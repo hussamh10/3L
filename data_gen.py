@@ -11,16 +11,16 @@ from random import shuffle
 
 #normalize
 
-path = 'path\\to\\files\\'
+path = 'data\\'
 
 
 def getImageFromPair(id):
-    image_path = path + 'paired\\image\\' + str(id)
+    image_path = path + 'pair\\images\\' + str(id) + '.jpg'
     img = imread(image_path)
     return img
 
 def getAudioFromPair(id):
-    audio_path = path + 'paired\\audio\\' + str(id)
+    audio_path = path + 'pair\\audio\\' + str(id) + '.jpg'
     aud = imread(audio_path)
     return aud
 
@@ -28,12 +28,12 @@ def getAudioFromPair(id):
 
 
 def getImageFromNotPair(id):
-    image_path = path + 'not_paired\\image\\' + str(id)
+    image_path = path + 'non_pair\\images\\' + str(id) + '.jpg'
     img = imread(image_path)
     return img
 
 def getAudioFromNotPair(id):
-    audio_path = path + 'not_paired\\audio\\' + str(id)
+    audio_path = path + 'non_pair\\audio\\' + str(id) + '.jpg'
     aud = imread(audio_path)
     return aud
 
@@ -59,16 +59,41 @@ def readPairs(id):
 
 def getData(start, batch_size):
 
+    all_audio = []
+    all_images = []
     posData = []
     negData = []
-    for i in range(batch_size):
+    labels = []
+    pairs = []
+    for i in range(int(batch_size/2)):
         posData.append(readPairs(start + i))
         negData.append(readNonPairs(start + i))
 
-        data = posData + negData
-        shuffle(data)
+        tpls = posData + negData
+        shuffle(tpls)
 
-    return data
+    for tpl in tpls:
+        labels.append(tpl[1])
+        pairs.append(tpl[0])
+
+    for pair in pairs:
+        all_images.append(pair[0])
+        all_audio.append(pair[1])
+
+    labels = np.array(labels)
+
+    all_audio = np.array(all_audio)
+    all_images = np.array(all_images)
+
+    all_images = all_images.astype('float32')
+    all_audio = all_audio.astype('float32')
+
+    all_images /= 255
+    all_audio /= 255
+
+    pairs = [all_images, all_audio]
+
+    return pairs, labels
 
 def getGenerator():
     return

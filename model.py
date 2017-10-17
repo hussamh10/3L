@@ -15,14 +15,20 @@ from old_data import getVideoData
 from old_data import getAudioData
 from old_data import getFusionData
 
+from data_gen import getData
+
 def trainFinal(final, epochs=2):
     print('Getting data...')
-    audio_video_data_tuple, label_on_correspondence, test_data, test_labels = getFusionData()
+    #audio_video_data_tuple, label_on_correspondence, test_data, test_labels = getFusionData()
+
+    audio_video_data_tuple, label_on_correspondence = getData(1, 800)
+
     print('Data ready')
 
     final.fit(audio_video_data_tuple, label_on_correspondence,
-            batch_size=10, epochs=epochs, verbose=1, validation_data = (test_data, test_labels))
-    print(final.evaluate(test_data, test_labels))
+            batch_size=10, epochs=epochs, verbose=1)
+   # , validation_data = (test_data, test_labels))
+    #print(final.evaluate(test_data, test_labels))
 
     return final
 
@@ -144,6 +150,6 @@ def fusedMain():
 
 if __name__ == '__main__':
     f = fusedMain()
-    f = trainFinal(f, epochs=2)
+    f = trainFinal(f, epochs=20)
     saveWeights(f, 'model.h5')
 
