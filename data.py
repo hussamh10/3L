@@ -50,7 +50,8 @@ def getFusionData():
 
     pairs = [all_images, all_audio]
 
-    pair_labels = utils.to_categorical(pair_labels, 2)
+    pair_labels = np.array(pair_labels)
+    #pair_labels = utils.to_categorical(pair_labels, 2)
 
     print(pairs[0].shape, pair_labels.shape)
     return pairs, pair_labels

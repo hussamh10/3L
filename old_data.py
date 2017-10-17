@@ -58,8 +58,11 @@ def getFusionData():
     pairs = [all_images, all_audio]
     v_pairs = [all_v_images, all_vaudio]
 
-    pair_labels = utils.to_categorical(pair_labels, 2)
-    pair_vlabels = utils.to_categorical(pair_vlabels, 2)
+    #pair_labels = utils.to_categorical(pair_labels, 2)
+    #pair_vlabels = utils.to_categorical(pair_vlabels, 2)
+
+    pair_labels = np.array(pair_labels)
+    pair_vlabels = np.array(pair_vlabels)
 
     print(pairs[0].shape, pair_labels.shape)
     return pairs, pair_labels, v_pairs, pair_vlabels
@@ -75,8 +78,8 @@ def getAudioData(dir1 = '.\\data\\audio\\airplanes\\' , dir2 = '.\\data\\audio\\
     train_data = data[:800]
     train_label = labels[:800]
 
-    test_data = data[100:200]
-    test_label = labels[100:200]
+    test_data = data[700:800]
+    test_label = labels[700:800]
 
     test_label = utils.to_categorical(test_label, 2)
     train_label = utils.to_categorical(train_label, 2)
@@ -105,8 +108,8 @@ def getVideoData(dir1 = '.\\data\\video\\airplanes\\', dir2 = '.\\data\\video\\m
     train_data = data[:800]
     train_label = labels[:800]
 
-    test_data = data[100:200]
-    test_label = labels[100:200]
+    test_data = data[700:800]
+    test_label = labels[700:800]
 
     test_label = utils.to_categorical(test_label, 2)
     train_label = utils.to_categorical(train_label, 2)

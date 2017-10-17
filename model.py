@@ -11,17 +11,18 @@ from keras import backend as K
 from keras.utils import plot_model
 from cv2 import imread
 
-from data import getVideoData
-from data import getAudioData
-from data import getFusionData
+from old_data import getVideoData
+from old_data import getAudioData
+from old_data import getFusionData
 
-def trainFinal(final):
+def trainFinal(final, epochs=2):
     print('Getting data...')
-    audio_video_data_tuple, label_on_correspondence = getFusionData()
+    audio_video_data_tuple, label_on_correspondence, test_data, test_labels = getFusionData()
     print('Data ready')
 
     final.fit(audio_video_data_tuple, label_on_correspondence,
-            batch_size=10, epochs=2, verbose=1)
+            batch_size=10, epochs=epochs, verbose=1, validation_data = (test_data, test_labels))
+    print(final.evaluate(test_data, test_labels))
 
     return final
 
@@ -32,11 +33,11 @@ def fusionBranch(video_branch, audio_branch):
     #final.add(Dense(512, activation='relu'))
     final.add(Dense(128, activation='relu'))
     final.add(Flatten())
-    final.add(Dense(2, activation='softmax'))
+    final.add(Dense(1, activation='sigmoid'))
 
-    final.compile(loss='categorical_crossentropy',
-            optimizer=keras.optimizers.Adadelta(),
-            #optimizer='adam',
+    final.compile(loss='binary_crossentropy',
+            #optimizer=keras.optimizers.Adadelta(),
+            optimizer='rmsprop',
             metrics=['accuracy']
             )
 
@@ -143,6 +144,6 @@ def fusedMain():
 
 if __name__ == '__main__':
     f = fusedMain()
-    f = trainFinal(f)
-    saveWeights(f, 'model.dmp')
+    f = trainFinal(f, epochs=2)
+    saveWeights(f, 'model.h5')
 
