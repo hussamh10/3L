@@ -19,17 +19,16 @@ from data_gen import getData
 
 def trainFinal(final, epochs=2):
     print('Getting data...')
-    #audio_video_data_tuple, label_on_correspondence, test_data, test_labels = getFusionData()
+    audio_video_data_tuple, label_on_correspondence, test_data, test_labels = getFusionData()
 
     #audio_video_data_tuple, label_on_correspondence = getData(10, 160, 1600)
 
     print('Data ready')
 
-    final.fit_generator(getData(100, 16), samples_per_epoch=16, nb_epoch=100, verbose=1)
+    #final.fit_generator(getData(100, 16), samples_per_epoch=16, nb_epoch=100, verbose=1)
 
-    #final.fit(audio_video_data_tuple, label_on_correspondence,
-    #        batch_size=10, epochs=epochs, verbose=1)
-   # , validation_data = (test_data, test_labels))
+    final.fit(audio_video_data_tuple, label_on_correspondence,
+            batch_size=10, epochs=epochs, verbose=1 , validation_data = (test_data, test_labels))
     #print(final.evaluate(test_data, test_labels))
 
     return final
@@ -38,14 +37,14 @@ def fusionBranch(video_branch, audio_branch):
 
     final = Sequential()
     final.add(Merge([video_branch, audio_branch]))
-    #final.add(Dense(512, activation='relu'))
-    final.add(Dense(128, activation='relu'))
+    final.add(Dense(512, activation='sigmoid'))
+    final.add(Dense(128, activation='sigmoid'))
     final.add(Flatten())
     final.add(Dense(1, activation='sigmoid'))
 
     final.compile(loss='binary_crossentropy',
             #optimizer=keras.optimizers.Adadelta(),
-            optimizer='rmsprop',
+            optimizer='adam',
             metrics=['accuracy']
             )
 
