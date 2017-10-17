@@ -57,43 +57,50 @@ def readPairs(id):
     return (pair, label)
 
 
-def getData(start, batch_size):
+def getData(batches, batch_size):
+    start = 1
 
-    all_audio = []
-    all_images = []
-    posData = []
-    negData = []
-    labels = []
-    pairs = []
-    for i in range(int(batch_size/2)):
-        posData.append(readPairs(start + i))
-        negData.append(readNonPairs(start + i))
+    for batch_no in range(batches):
 
-        tpls = posData + negData
-        shuffle(tpls)
+        start = batch_no*batch_size
+        start = start+1
+        all_audio = []
+        all_images = []
+        posData = []
+        negData = []
+        labels = []
+        pairs = []
+        for i in range((batch_size)):
+            id = start + i
+            posData.append(readPairs(start + i))
 
-    for tpl in tpls:
-        labels.append(tpl[1])
-        pairs.append(tpl[0])
+            negData.append(readNonPairs(start + i))
 
-    for pair in pairs:
-        all_images.append(pair[0])
-        all_audio.append(pair[1])
+            tpls = posData + negData
+            shuffle(tpls)
 
-    labels = np.array(labels)
+        for tpl in tpls:
+            labels.append(tpl[1])
+            pairs.append(tpl[0])
 
-    all_audio = np.array(all_audio)
-    all_images = np.array(all_images)
+        for pair in pairs:
+            all_images.append(pair[0])
+            all_audio.append(pair[1])
 
-    all_images = all_images.astype('float32')
-    all_audio = all_audio.astype('float32')
+        labels = np.array(labels)
 
-    all_images /= 255
-    all_audio /= 255
+        all_audio = np.array(all_audio)
+        all_images = np.array(all_images)
 
-    pairs = [all_images, all_audio]
+        all_images = all_images.astype('float32')
+        all_audio = all_audio.astype('float32')
 
-    return pairs, labels
+        all_images /= 255
+        all_audio /= 255
+
+        pairs = [all_images, all_audio]
+
+        yield pairs, labels
 
 def getGenerator():
     return

@@ -21,12 +21,14 @@ def trainFinal(final, epochs=2):
     print('Getting data...')
     #audio_video_data_tuple, label_on_correspondence, test_data, test_labels = getFusionData()
 
-    audio_video_data_tuple, label_on_correspondence = getData(1, 800)
+    #audio_video_data_tuple, label_on_correspondence = getData(10, 160, 1600)
 
     print('Data ready')
 
-    final.fit(audio_video_data_tuple, label_on_correspondence,
-            batch_size=10, epochs=epochs, verbose=1)
+    final.fit_generator(getData(100, 16), samples_per_epoch=16, nb_epoch=100, verbose=1)
+
+    #final.fit(audio_video_data_tuple, label_on_correspondence,
+    #        batch_size=10, epochs=epochs, verbose=1)
    # , validation_data = (test_data, test_labels))
     #print(final.evaluate(test_data, test_labels))
 
