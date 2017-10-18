@@ -151,6 +151,6 @@ def fusedMain():
 
 if __name__ == '__main__':
     f = fusedMain()
-    f = trainFinal(f, epochs=20)
+    f = trainFinal(f, epochs=100)
     saveWeights(f, 'model.h5')
 
