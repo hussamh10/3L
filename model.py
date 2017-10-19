@@ -40,7 +40,7 @@ def fusionBranch(video_branch, audio_branch):
     final.add(Dense(512, activation='sigmoid'))
     final.add(Dense(128, activation='sigmoid'))
     final.add(Flatten())
-    final.add(Dense(1, activation='sigmoid'))
+    final.add(Dense(1, activation='softmax'))
 
     final.compile(loss='binary_crossentropy',
             #optimizer=keras.optimizers.Adadelta(),
@@ -151,6 +151,6 @@ def fusedMain():
 
 if __name__ == '__main__':
     f = fusedMain()
-    f = trainFinal(f, epochs=20)
+    f = trainFinal(f, epochs=100)
     saveWeights(f, 'model.h5')
 

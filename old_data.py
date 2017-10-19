@@ -37,7 +37,7 @@ def getFusionData():
     print(all_images.shape)
 
     audio1, _, vaudio1, _ = getAudioData()
-    audio2, _, vaudio2, _ = getAudioData('.\\data\\audio\\airplanes\\', '.\\data\\audio\\airplanes\\' )
+    audio2, _, vaudio2, _ = getAudioData('.\\data\\audio\\motorbikes\\', '.\\data\\audio\\airplanes\\' )
 
     all_audio = np.append(audio1, audio2)
     all_vaudio = np.append(vaudio1, vaudio2)
