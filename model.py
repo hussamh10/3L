@@ -13,15 +13,15 @@ from cv2 import imread
 
 from old_data import getVideoData
 from old_data import getAudioData
-from old_data import getFusionData
+#from old_data import getFusionData
 
-#from test_data import getFusionData
+from test_data import getFusionData
 
 from data_gen import getData
 
 def trainFinal(final, epochs=2):
     print('Getting data...')
-    audio_video_data_tuple, label_on_correspondence,_ ,_ = getFusionData()
+    audio_video_data_tuple, label_on_correspondence = getFusionData()
 
     #audio_video_data_tuple, label_on_correspondence = getData(10, 160, 1600)
 
@@ -30,7 +30,7 @@ def trainFinal(final, epochs=2):
     #final.fit_generator(getData(100, 16), samples_per_epoch=16, nb_epoch=100, verbose=1)
 
     final.fit(audio_video_data_tuple, label_on_correspondence,
-            batch_size=10, epochs=epochs, verbose=1)
+            batch_size=5, epochs=epochs, verbose=1)
     #print(final.evaluate(test_data, test_labels))
 
     return final
