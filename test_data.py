@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 
-size = 200
+size = 1
 
 def getWhiteAudio():
     #img = cv2.imread('data\\audio\\white')
@@ -19,31 +19,33 @@ def getBlackAudio():
 def getWhiteVideo_old(i):
     img = np.zeros((224, 224, 3)) + 255
     img /= 255
+    img = img + 0.75
     return img
 
     
 def getBlackVideo_old(i):
     img = np.zeros((224, 224, 3))
     img /= 255
+    img = img + 0.25
     return img
 
 
 def getWhiteVideo(i):
-    i = (i%10) + 1
+    #i = (i%10) + 1
+    i += 1
     name = 'image (' + str(i) + ').jpg'
     img = cv2.imread('data\\video\\white\\' + name)
     img = img.astype('float32')
-    #img = np.zeros((224, 224, 3))
     #img = img+255
     img /= 255
     return img
 
 def getBlackVideo(i):
-    i = (i%10) + 1
+    #i = (i%10) + 1
+    i += 1
     name = 'image (' + str(i) + ').jpg'
     img = cv2.imread('data\\video\\black\\' + name)
     img = img.astype('float32')
-    #img = np.zeros((224, 224, 3))
     img /= 255
     return img
 
@@ -51,9 +53,9 @@ def getFusionData():
     v1 = []
     v2 = []
     for i in range(size):
-        v1.append(getBlackVideo_old(i))
+        v1.append(getBlackVideo(i))
     for i in range(size):
-        v2.append(getWhiteVideo_old(i))
+        v2.append(getWhiteVideo(i))
 
     a1 = []
     a2 = []

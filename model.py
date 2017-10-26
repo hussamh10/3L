@@ -6,22 +6,22 @@ import pickle
 from keras.datasets import mnist
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Flatten, Merge
-from keras.layers import Conv2D, MaxPooling2D, Activation
+from keras.layers import Conv2D, MaxPooling2D, Activation, BatchNormalization
 from keras import backend as K
 from keras.utils import plot_model
 from cv2 import imread
 
 from old_data import getVideoData
 from old_data import getAudioData
-#from old_data import getFusionData
+from old_data import getFusionData
 
-from test_data import getFusionData
+#from test_data import getFusionData
 
 from data_gen import getData
 
 def trainFinal(final, epochs=2):
     print('Getting data...')
-    audio_video_data_tuple, label_on_correspondence = getFusionData()
+    audio_video_data_tuple, label_on_correspondence,_ ,_ = getFusionData()
 
     #audio_video_data_tuple, label_on_correspondence = getData(10, 160, 1600)
 
@@ -39,14 +39,14 @@ def fusionBranch(video_branch, audio_branch):
 
     final = Sequential()
     final.add(Merge([video_branch, audio_branch]))
-    final.add(Dense(512, activation='sigmoid'))
-    final.add(Dense(128, activation='sigmoid'))
+    #final.add(Dense(512, activation='sigmoid'))
     final.add(Flatten())
+    final.add(Dense(128, activation='sigmoid'))
     final.add(Dense(1, activation='sigmoid'))
 
     final.compile(loss='binary_crossentropy',
-            optimizer=keras.optimizers.Adadelta(),
-            #optimizer='adam',
+            #optimizer=keras.optimizers.Adadelta(),
+            optimizer='adam',
             metrics=['accuracy']
             )
 
@@ -56,26 +56,37 @@ def fusionBranch(video_branch, audio_branch):
 def getModelArchitecture(input_shape, final_pool):
     cmodel = Sequential()
 
-    #cmodel.add(Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=input_shape, padding = 'same'))
-    cmodel.add(Conv2D(16, kernel_size=(3, 3), activation='relu', input_shape=input_shape, padding = 'same'))
+    cmodel.add(Conv2D(64, kernel_size=(3, 3), activation='relu', input_shape=input_shape, padding = 'same'))
+    cmodel.add(BatchNormalization())
+    cmodel.add(Conv2D(64, kernel_size=(3, 3), activation='relu', input_shape=input_shape, padding = 'same'))
+    cmodel.add(BatchNormalization())
     #cmodel.add(Conv2D(64, kernel_size=(3, 3), activation='relu', padding='same'))
-    cmodel.add(MaxPooling2D(pool_size=(2, 2), strides=2, padding='same'))
-    cmodel.add(Dropout(0.25))
-
-    cmodel.add(Conv2D(32, kernel_size=(3, 3), activation='relu', padding='same'))
-    #cmodel.add(Conv2D(128, kernel_size=(3, 3), activation='relu', padding='same'))
-    cmodel.add(MaxPooling2D(pool_size=(2, 2), strides=2, padding='same'))
-    cmodel.add(Dropout(0.25))
-
-    #cmodel.add(Conv2D(64, kernel_size=(3, 3), activation='relu', padding='same'))
-    cmodel.add(Conv2D(64, kernel_size=(3, 3), activation='relu', padding='same'))
-    #cmodel.add(Conv2D(256, kernel_size=(3, 3), activation='relu', padding='same'))
     cmodel.add(MaxPooling2D(pool_size=(2, 2), strides=2, padding='same'))
     cmodel.add(Dropout(0.25))
 
     #cmodel.add(Conv2D(32, kernel_size=(3, 3), activation='relu', padding='same'))
     cmodel.add(Conv2D(128, kernel_size=(3, 3), activation='relu', padding='same'))
-    #cmodel.add(Conv2D(512, kernel_size=(3, 3), activation='relu', padding='same'))
+    cmodel.add(BatchNormalization())
+    cmodel.add(Conv2D(128, kernel_size=(3, 3), activation='relu', padding='same'))
+    cmodel.add(BatchNormalization())
+    cmodel.add(MaxPooling2D(pool_size=(2, 2), strides=2, padding='same'))
+    cmodel.add(Dropout(0.25))
+
+    #cmodel.add(Conv2D(64, kernel_size=(3, 3), activation='relu', padding='same'))
+    #cmodel.add(Conv2D(64, kernel_size=(3, 3), activation='relu', padding='same'))
+    cmodel.add(Conv2D(256, kernel_size=(3, 3), activation='relu', padding='same'))
+    cmodel.add(BatchNormalization())
+    cmodel.add(Conv2D(256, kernel_size=(3, 3), activation='relu', padding='same'))
+    cmodel.add(BatchNormalization())
+    cmodel.add(MaxPooling2D(pool_size=(2, 2), strides=2, padding='same'))
+    cmodel.add(Dropout(0.25))
+
+    #cmodel.add(Conv2D(32, kernel_size=(3, 3), activation='relu', padding='same'))
+    #cmodel.add(Conv2D(128, kernel_size=(3, 3), activation='relu', padding='same'))
+    cmodel.add(Conv2D(512, kernel_size=(3, 3), activation='relu', padding='same'))
+    cmodel.add(BatchNormalization())
+    cmodel.add(Conv2D(512, kernel_size=(3, 3), activation='relu', padding='same'))
+    cmodel.add(BatchNormalization())
     cmodel.add(MaxPooling2D(pool_size=(final_pool), strides=None, padding='same'))
     cmodel.add(Dropout(0.25))
 
