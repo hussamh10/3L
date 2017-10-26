@@ -31,7 +31,7 @@ def getFusionData():
     
     pair_labels = []
     for _ in range(800):
-        pair_labels.append(-1)
+        pair_labels.append(0)
 
 
     print(all_images.shape)

@@ -20,7 +20,6 @@ def readImages(dir, y, limit, data, labels, ext):
     return data, labels
 
 
-
 def getFusionData():
 
     images, _, _, _ = getVideoData()
@@ -38,7 +37,7 @@ def getFusionData():
     data = labels = []
 
     audio1, _, _, _ = getAudioData()
-    audio2, _, _, _ = getAudioData('.\\data\\audio\\airplanes\\', '.\\data\\audio\\airplanes\\' )
+    audio2, _, _, _ = getAudioData('.\\data\\audio\\motorbikes\\', '.\\data\\audio\\airplanes\\' )
 
     all_audio = np.append(audio1, audio2)
 
